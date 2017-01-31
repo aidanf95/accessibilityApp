@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * Created by God on 29/01/2017.
+ * NOT BEING USED AT THE MOMENT (OLD CLASS)
  */
 public class ChatHeadService extends Service
 {

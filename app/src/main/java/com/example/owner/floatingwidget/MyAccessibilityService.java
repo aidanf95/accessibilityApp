@@ -142,6 +142,13 @@ public class MyAccessibilityService extends AccessibilityService
         Log.d("TAG", "onServiceConnected");
     }
 
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mWindowManager.removeView(mBackBtn);
+    }
+
     /**
      * Class for Gestures
      */
