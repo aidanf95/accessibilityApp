@@ -14,10 +14,11 @@ import android.widget.ImageView;
 /**
  * Created by God on 30/01/2017.
  */
-public class MyAccessibilityService extends AccessibilityService
+public class MyAccessibilityService extends AccessibilityService implements IActionListener
 {
     private WindowManager mWindowManager;
     private ImageView mBackBtn; //home,recent;
+//    private MyFloatingWidget mBackBtn;
     private GestureDetector mGestureDetector;
     WindowManager.LayoutParams params;
 
@@ -27,6 +28,9 @@ public class MyAccessibilityService extends AccessibilityService
         super.onCreate();
 
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+//        mBackBtn = new MyFloatingWidget(this, this);
+//        mBackBtn.setImageResource(R.mipmap.ic_launcher);
 
         mBackBtn = new ImageView(this);
 //        home = new ImageView(this);
@@ -58,7 +62,7 @@ public class MyAccessibilityService extends AccessibilityService
                 //TODO: Add doubleTap, TripleTap & LongPress Gestures for other functionality.
                 if (mGestureDetector.onTouchEvent(event))
                 {
-                    backButtonPressed();
+                    //Gesture event occurred
                     return true;
                 }
                 else //else dragged
@@ -87,7 +91,8 @@ public class MyAccessibilityService extends AccessibilityService
         mWindowManager.addView(mBackBtn, params);
     }
 
-    private void backButtonPressed()
+    @Override
+    public void onBackPressed()
     {
         try
         {
@@ -100,7 +105,8 @@ public class MyAccessibilityService extends AccessibilityService
         }
     }
 
-    private void homeButtonPressed()
+    @Override
+    public void onHomePressed()
     {
         try
         {
@@ -113,7 +119,8 @@ public class MyAccessibilityService extends AccessibilityService
         }
     }
 
-    private void recentButtonPressed()
+    @Override
+    public void onRecentPressed()
     {
         try
         {
@@ -155,14 +162,33 @@ public class MyAccessibilityService extends AccessibilityService
     private class SingleTapConfirmed extends GestureDetector.SimpleOnGestureListener
     {
         @Override
+        public void onLongPress(MotionEvent event)
+        {
+            onRecentPressed();
+            Log.e("LONG PRESS", "LONG PRESS");
+        }
+
+        @Override
         public boolean onSingleTapUp(MotionEvent event)
         {
+            Log.e("SINGLE TAP UP", "SINGLE TAP UP");
             return true;
         }
 
         @Override
+        public boolean onSingleTapConfirmed(MotionEvent e)
+        {
+            onBackPressed();
+            Log.e("SINGLE TAP CONFIRMED", "SINGLE TAP CONFIRMED");
+            return true;
+        }
+
+
+        @Override
         public boolean onDoubleTap(MotionEvent event)
         {
+            onHomePressed();
+            Log.e("DOUBLE TAP", "DOUBLE TAP");
             return true;
         }
     }
